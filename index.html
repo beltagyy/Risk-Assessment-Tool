@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Risk Assessment Tool</title>
+</head>
+<body>
+    <h1>Risk Assessment Tool</h1>
+    
+    <form action="/" method="post">
+        <label for="description">Risk Description:</label>
+        <input type="text" name="description" required><br>
+        
+        <label for="impact">Impact (1-10):</label>
+        <input type="number" name="impact" min="1" max="10" required><br>
+        
+        <label for="likelihood">Likelihood (1-10):</label>
+        <input type="number" name="likelihood" min="1" max="10" required><br>
+        
+        <input type="submit" value="Add Risk">
+    </form>
+    
+    <h2>List of Risks:</h2>
+    <table border="1">
+        <tr>
+            <th>Description</th>
+            <th>Impact</th>
+            <th>Likelihood</th>
+            <th>Risk Score</th>
+        </tr>
+        {% for risk in risks %}
+        <tr>
+            <td>{{ risk[1] }}</td>
+            <td>{{ risk[2] }}</td>
+            <td>{{ risk[3] }}</td>
+            <td>{{ risk[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Risk Assessment Tool</title>
+</head>
+<body>
+    <h1>Risk Assessment Tool</h1>
+    
+    <form action="/" method="post">
+        <label for="description">Risk Description:</label>
+        <input type="text" name="description" required><br>
+        
+        <label for="impact">Impact (1-10):</label>
+        <input type="number" name="impact" min="1" max="10" required><br>
+        
+        <label for="likelihood">Likelihood (1-10):</label>
+        <input type="number" name="likelihood" min="1" max="10" required><br>
+
+        <!-- Category dropdown -->
+        <label for="category">Category:</label>
+        {% if categories %}
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category[0] }}">{{ category[1] }}</option>
+            {% endfor %}
+        </select><br>
+        {% else %}
+        <p>No categories available. Please add some categories first.</p>
+        {% endif %}
+        
+        <input type="submit" value="Add Risk">
+    </form>
+    
+    <h2>List of Risks:</h2>
+    <table border="1">
+        <tr>
+            <th>Description</th>
+            <th>Impact</th>
+            <th>Likelihood</th>
+            <th>Risk Score</th>
+            <th>Category</th>
+            <th>Comments</th>
+        </tr>
+        {% for risk_data in risks %}
+        <tr>
+            <td>{{ risk_data['risk'][1] }}</td>
+            <td>{{ risk_data['risk'][2] }}</td>
+            <td>{{ risk_data['risk'][3] }}</td>
+            <td>{{ risk_data['risk'][4] }}</td>
+            <td>{{ risk_data['risk'][6] }}</td>
+            <td>
+                <!-- List existing comments for the risk -->
+                {% for comment in risk_data['comments'] %}
+                <p>{{ comment[2] }}</p>
+                {% endfor %}
+                <!-- Add new comment form -->
+                <form action="/add_comment/{{ risk_data['risk'][0] }}" method="post">
+                    <input type="text" name="comment_text" placeholder="Add a comment..." required>
+                    <input type="submit" value="Comment">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
