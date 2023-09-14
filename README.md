@@ -1,53 +1,67 @@
-Risk Assessment Tool
-Overview
-The Risk Assessment Tool is a simple web application developed using Flask that enables users to record, categorize, and assess risks. It also supports user registration and login functionality.
-
-Features
-User Registration and Login: Users can sign up and securely log in to access the tool.
-Risk Management:
-Add risks with descriptions, impact, and likelihood values.
-Categorize risks.
-Calculate a risk score based on impact and likelihood.
-Comment on specific risks.
-Assign a status to risks (e.g., Open, Closed, In Progress).
-Setup Instructions
-Ensure you have Python and Flask installed.
-Clone or download the project.
-Navigate to the project directory in your terminal or command prompt.
-Run the following command to install necessary packages:
-Copy code
-pip install flask flask-login
-Run app.py:
-Copy code
-python app.py
-Open a web browser and go to http://127.0.0.1:5000/ to access the tool.
-Register a new user account and start using the Risk Assessment Tool.
-Development Steps
-Initialization:
-
-Set up Flask.
-Create an SQLite database for risks.
-Build a basic UI to add and list risks.
-User Management:
-
-Create user registration and login forms.
-Hash and verify passwords for security.
-Store user information in the SQLite database.
-Risk Categories:
-
-Extend the SQLite database to support risk categories.
-Allow users to categorize risks when adding them.
-Display risk categories in the risk list.
-Comments or Notes for Risks:
-
-Allow users to add comments or notes to specific risks.
-Display comments in the risk list.
-Risk Status:
-
-Define different statuses for risks (e.g., Open, Closed, In Progress).
-Allow users to assign a status when adding a risk.
-Display the risk status in the risk list.
-Future Enhancements
-Risk editing and deletion.
-User profiles and roles.
-Reporting and visualization tools for risks.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment Tool README</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+        section {
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Risk Assessment Tool</h1>
+    </header>
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            This Risk Assessment Tool is a web application that allows users to input and evaluate risks based on their description, impact, and likelihood.
+        </p>
+    </section>
+    <section>
+        <h2>Features</h2>
+        <ul>
+            <li>User registration and login</li>
+            <li>Add, view and categorize risks</li>
+            <li>Comment on risks</li>
+            <li>Assign status to risks</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Setup</h2>
+        <ol>
+            <li>Clone the repository to your local machine.</li>
+            <li>Ensure you have the required Python libraries installed. Use <code>pip install -r requirements.txt</code></li>
+            <li>Run the app using <code>python app.py</code></li>
+            <li>Open a browser and navigate to <code>http://localhost:5000</code></li>
+        </ol>
+    </section>
+    <section>
+        <h2>Contributing</h2>
+        <p>
+            We welcome contributions to improve the tool. Please fork the repository and submit pull requests for any enhancements or fixes.
+        </p>
+    </section>
+    <footer>
+        <p>© 2023 Risk Assessment Tool Team</p>
+    </footer>
+</body>
+</html>
