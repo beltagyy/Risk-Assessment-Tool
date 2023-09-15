@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Edit Risk</title>
+</head>
+<body>
+    <h1>Edit Risk</h1>
+
+    <form action="{{ url_for('edit_risk', risk_id=risk[0]) }}" method="post">
+        <label for="description">Risk Description:</label>
+        <input type="text" name="description" value="{{ risk.description }}" required><br>
+        
+        <label for="impact">Impact (1-10):</label>
+        <input type="number" name="impact" min="1" max="10" value="{{ risk.impact }}" required><br>
+        
+        <label for="likelihood">Likelihood (1-10):</label>
+        <input type="number" name="likelihood" min="1" max="10" value="{{ risk.likelihood }}" required><br>
+
+        <!-- Category dropdown -->
+        <label for="category">Category:</label>
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category[0] }}" {% if category[0] == risk.category_id %}selected{% endif %}>{{ category[1] }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Status dropdown -->
+        <label for="status">Status:</label>
+        <select name="status">
+            {% for status in statuses %}
+            <option value="{{ status[0] }}" {% if status[0] == risk.status_id %}selected{% endif %}>{{ status[1] }}</option>
+            {% endfor %}
+        </select><br>
+
+        <input type="submit" value="Save Changes">
+    </form>
+
+    <a href="/">Back to List</a>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

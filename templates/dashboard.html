@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Real-Time Dashboard</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </head>
+<body>
+    <h1>Real-Time Dashboard</h1>
+    
+    <p>Total Risks: {{ total_risks }}</p>
+    
+    <h2>Risks by Status:</h2>
+    <ul>
+        {% for status, count in risk_count_by_status.items() %}
+        <li>{{ status }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Status Diagram:</h2>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <div id="bar-chart-container">
+        <div class="bar-chart">
+            <div class="bar" id="bar-open" style="height: 0%;"></div>
+            <div class="bar-label">Open</div>
+        </div>
+        <div class="bar-chart">
+            <div class="bar" id="bar-in-progress" style="height: 0%;"></div>
+            <div class="bar-label">In Progress</div>
+        </div>
+        <div class="bar-chart">
+            <div class="bar" id="bar-closed" style="height: 0%;"></div>
+            <div class="bar-label">Closed</div>
+        </div>
+    </div>
+
+</body>
+</html>

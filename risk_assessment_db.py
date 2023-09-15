@@ -69,9 +69,10 @@ def get_all_risks():
     conn = sqlite3.connect('risks.db')
     cursor = conn.cursor()
     cursor.execute("""
-    SELECT Risks.*, Categories.name 
+    SELECT Risks.*, Categories.name, Statuses.status_name
     FROM Risks 
     LEFT JOIN Categories ON Risks.category_id = Categories.id
+    LEFT JOIN Statuses ON Risks.status_id = Statuses.id
     """)
     risks = cursor.fetchall()
     conn.close()
@@ -131,16 +132,114 @@ def get_comments_for_risk(risk_id):
     conn.close()
     return comments
 
+def setup_status_table():
+    with sqlite3.connect('risks.db') as conn:
+        conn.execute("""
+        CREATE TABLE IF NOT EXISTS Statuses (
+            id INTEGER PRIMARY KEY,
+            status_name TEXT NOT NULL
+        );
+        """)
+def add_status(status_name):
+    with sqlite3.connect('risks.db') as conn:
+        conn.execute("INSERT INTO Statuses (status_name) VALUES (?)", (status_name,))
+
+def get_all_statuses():
+    with sqlite3.connect('risks.db') as conn:
+        return conn.execute("SELECT * FROM Statuses").fetchall()
+
+def alter_risks_for_status():
+    with sqlite3.connect('risks.db') as conn:
+        try:
+            # Try to add a new column for status_id
+            conn.execute("ALTER TABLE Risks ADD COLUMN status_id INTEGER REFERENCES Statuses(id)")
+        except sqlite3.OperationalError as e:
+            if 'duplicate column name' in str(e):
+                pass  # Column already exists, so we skip adding it
+            else:
+                raise  # Some other error occurred
+
+def add_risk(description, impact, likelihood, category_id, status_id):
+    risk_score = impact * likelihood
+    with sqlite3.connect('risks.db') as conn:
+        conn.execute("""
+        INSERT INTO Risks (description, impact, likelihood, risk_score, category_id, status_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, (description, impact, likelihood, risk_score, category_id, status_id))
+
+def update_risk(risk_id, description, impact, likelihood, category_id, status_id):
+    risk_score = impact * likelihood
+    with sqlite3.connect('risks.db') as conn:
+        conn.execute("""
+        UPDATE Risks 
+        SET description = ?, impact = ?, likelihood = ?, risk_score = ?, category_id = ?, status_id = ?
+        WHERE id = ?
+        """, (description, impact, likelihood, risk_score, category_id, status_id, risk_id))
+
+def get_risk_by_id(risk_id):
+    with sqlite3.connect('risks.db') as conn:
+        return conn.execute("SELECT * FROM Risks WHERE id = ?", (risk_id,)).fetchone()
+
+def delete_risk(risk_id):
+    conn = sqlite3.connect('risks.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Risks WHERE id=?", (risk_id,))
+    conn.commit()
+    conn.close()
+
+def get_risk_count_by_status():
+    with sqlite3.connect('risks.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT Statuses.status_name, COUNT(Risks.id)
+        FROM Risks
+        LEFT JOIN Statuses ON Risks.status_id = Statuses.id
+        GROUP BY Statuses.status_name
+        """)
+        counts = cursor.fetchall()
+        return dict(counts)
+def get_total_risks():
+    with sqlite3.connect('risks.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM Risks")
+        total = cursor.fetchone()[0]
+        return total
+
+def get_risks_by_status():
+    conn = sqlite3.connect('risks.db')
+    cursor = conn.cursor()
+    
+    # Query to get the count of risks for each status
+    cursor.execute("""
+    SELECT Statuses.status_name, COUNT(Risks.id)
+    FROM Risks
+    LEFT JOIN Statuses ON Risks.status_id = Statuses.id
+    GROUP BY Risks.status_id
+    """)
+    
+    results = cursor.fetchall()
+    conn.close()
+    
+    # Convert the result into a dictionary
+    status_counts = {result[0]: result[1] for result in results}
+    
+    return status_counts
+
 
 if __name__ == '__main__':
     setup_database()
     setup_users_table()
     setup_categories_table()
     setup_comments_table()
+    setup_status_table()
+    alter_risks_for_status()
     add_category('Financial')
     add_category('Operational')
     add_category('Strategic')
-
+    add_status("Open")
+    add_status("Closed")
+    add_status("In Progress")
+    print(get_all_statuses())
 
 
 

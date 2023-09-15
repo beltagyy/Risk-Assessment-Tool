@@ -1,0 +1,118 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f4f4f4;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* Form Styles */
+form {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
+
+/* Updated Table Styles */
+
+table {
+    width: 80%;  /* Fixed table width */
+    border-collapse: separate;  /* Required for spacing between cells */
+    margin: 20px 0px 20px 20px;  /* Top, Right, Bottom, Left */
+    background: rgba(255, 255, 255, 0.9);  /* Slight transparency */
+    border-radius: 12px;  /* Rounded corners */
+    overflow: hidden;  /* Required for rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Slight shadow for depth */
+}
+
+th, td {
+    border: 1px solid rgba(0, 0, 0, 0.1);  /* Slight transparency on borders */
+    text-align: left;
+    padding: 8px;
+    text-align: center;  /* Centered text */
+}
+
+th {
+    background-color: rgba(0, 0, 0, 0.8);  /* Darker background with some transparency */
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);  /* Slight row color for better readability */
+}
+
+/* Smaller width for specific columns (like Impact, Likelihood, etc.) */
+td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+    width: 10%;
+}
+
+
+button.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Hover effect */
+tr.hover {
+    background-color: #ddd;
+}
+/* Add this to your CSS */
+#bar-chart-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.bar-chart {
+    width: 30%;
+    text-align: center;
+}
+
+.bar {
+    width: 100%;
+    background-color: blue;
+    transition: height 0.5s ease;
+}
+
+.bar-label {
+    padding-top: 10px;
+}

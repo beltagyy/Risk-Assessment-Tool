@@ -8,6 +8,17 @@ from forms import RegistrationForm, LoginForm
 from risk_assessment_db import add_comment
 from risk_assessment_db import setup_comments_table
 from risk_assessment_db import add_comment, get_comments_for_risk  
+from risk_assessment_db import get_all_statuses
+from risk_assessment_db import get_risk_by_id, get_all_categories, get_all_statuses, update_risk # and other required functions
+from flask import Flask, render_template, request, redirect, url_for, abort
+import risk_assessment_db as db
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from risk_assessment_db import get_risk_count_by_status  # Add this to your existing imports
+from risk_assessment_db import get_total_risks  # Add this to your existing imports
+from risk_assessment_db import get_risks_by_status # Other imports
+from risk_assessment_db import get_total_risks, get_risks_by_status
+
+
 
 setup_comments_table()
 
@@ -28,12 +39,16 @@ def load_user(user_id):
 @login_required
 def index():
     categories = get_all_categories()
+    statuses = get_all_statuses()  # Fetch all statuses
+
     if request.method == 'POST':
         description = request.form['description']
         impact = int(request.form['impact'])
         likelihood = int(request.form['likelihood'])
         category_id = int(request.form['category'])
-        add_risk(description, impact, likelihood, category_id)
+        print(request.form)  # Print the entire form data
+        status_id = int(request.form['status'])  # Get the status from the form
+        add_risk(description, impact, likelihood, category_id, status_id)
         return redirect(url_for('index'))
     
     risks = get_all_risks()
@@ -48,7 +63,7 @@ def index():
     
         risks_with_comments.append(risk_data)
     print(risks_with_comments)
-    return render_template('index.html', risks=risks_with_comments, categories=categories)
+    return render_template('index.html', risks=risks_with_comments, categories=categories, statuses=statuses)
 
 
 @app.route('/add_comment/<int:risk_id>', methods=['POST'])
@@ -99,6 +114,65 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/edit_risk/<int:risk_id>', methods=['GET','POST'])
+@login_required
+def edit_risk(risk_id):
+    risk = get_risk_by_id(risk_id)
+    if risk is None:
+        abort(404)
+    categories = get_all_categories()
+    statuses = get_all_statuses()
+
+    if request.method == 'POST':
+        # handle form submission here
+        description = request.form['description']
+        impact = int(request.form['impact'])
+        likelihood = int(request.form['likelihood'])
+        category_id = int(request.form['category'])
+        status_id = int(request.form['status'])
+        
+        update_risk(risk_id, description, impact, likelihood, category_id, status_id)
+        return redirect(url_for('index'))
+    else:
+        return render_template('edit_risk.html', risk=risk, categories=categories, statuses=statuses)
+
+@app.route('/edit/<int:risk_id>', methods=['GET'])
+@login_required
+
+def edit_page(risk_id):
+    risk = get_risk_by_id(risk_id)
+    categories = get_all_categories()
+    statuses = get_all_statuses()
+    return render_template('edit_risk.html', risk=risk, categories=categories, statuses=statuses)
+
+@app.route('/delete_risk/<int:risk_id>', methods=['POST'])
+def delete_risk(risk_id):
+    if request.method == 'POST':
+        db.delete_risk(risk_id)
+        return redirect(url_for('index'))
+
+@app.route('/api/dashboard_data', methods=['GET'])
+@login_required
+def dashboard_data():
+    statuses = get_all_statuses()
+    status_count = {}
+    for status in statuses:
+        status_id = status[0]
+        status_name = status[1]
+        status_count[status_name] = sum(1 for risk in get_all_risks() if risk[7] == status_name)
+
+    return jsonify({
+        'total_risks': len(get_all_risks()),
+        'status_count': status_count
+    })
+
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    total_risks = get_total_risks()
+    risk_count_by_status = get_risks_by_status()  # Make sure this is defined
+    return render_template('dashboard.html', total_risks=total_risks, risk_count_by_status=risk_count_by_status)
 
 
 if __name__ == '__main__':
