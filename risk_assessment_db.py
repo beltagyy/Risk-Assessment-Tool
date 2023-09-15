@@ -1,5 +1,6 @@
 # risk_assessment_db.py
-
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime
 import sqlite3
 
 def setup_database():
@@ -225,6 +226,43 @@ def get_risks_by_status():
     
     return status_counts
 
+def setup_subscribers_table():
+    try:
+        with sqlite3.connect('risks.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS Subscribers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT NOT NULL,
+                timestamp TEXT NOT NULL
+            )
+            """)
+            conn.commit()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def add_subscriber(email):
+    try:
+        with sqlite3.connect('risks.db') as conn:
+            cursor = conn.cursor()
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            cursor.execute("INSERT INTO Subscribers (email, timestamp) VALUES (?, ?)", (email, timestamp))
+            conn.commit()
+            return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+    
+def get_subscribers():
+    try:
+        with sqlite3.connect('risks.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT email, timestamp FROM Subscribers")
+            subscribers = cursor.fetchall()
+            return subscribers
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []  # Return an empty list instead of None
 
 if __name__ == '__main__':
     setup_database()
@@ -232,6 +270,7 @@ if __name__ == '__main__':
     setup_categories_table()
     setup_comments_table()
     setup_status_table()
+    setup_subscribers_table()
     alter_risks_for_status()
     add_category('Financial')
     add_category('Operational')

@@ -20,7 +20,7 @@
     
     <h2>Status Diagram:</h2>
     <canvas id="myChart" width="400" height="400"></canvas>
-    <div id="bar-chart-container">
+    <!-- <div id="bar-chart-container">
         <div class="bar-chart">
             <div class="bar" id="bar-open" style="height: 0%;"></div>
             <div class="bar-label">Open</div>
@@ -32,7 +32,9 @@
         <div class="bar-chart">
             <div class="bar" id="bar-closed" style="height: 0%;"></div>
             <div class="bar-label">Closed</div>
-        </div>
+        </div> -->
+        <img src="{{ url_for('plot') }}" alt="Risks by Status">
+
     </div>
 
 </body>

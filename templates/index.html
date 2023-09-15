@@ -5,8 +5,20 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <title>Risk Assessment Tool</title>
+    <style>
+        /* Add some basic styling */
+        #logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 </head>
 <body>
+    <div id="logout-btn">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
     <h1>Risk Assessment Tool</h1>
     
     <form action="/" method="post">
@@ -44,10 +56,17 @@
         {% endif %}
         
         <input type="submit" value="Add Risk">
+        
     </form>
     <a href="{{ url_for('dashboard') }}">
         <button>Go to Dashboard</button>
     </a>
+
+    <div>
+    <a href="{{ url_for('subscribe') }}" >
+        <button>Subscribe</button>
+    </a>
+    </div>
     <h2>List of Risks:</h2>
     <table border="1">
         <tr>

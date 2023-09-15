@@ -17,7 +17,11 @@ from risk_assessment_db import get_risk_count_by_status  # Add this to your exis
 from risk_assessment_db import get_total_risks  # Add this to your existing imports
 from risk_assessment_db import get_risks_by_status # Other imports
 from risk_assessment_db import get_total_risks, get_risks_by_status
-
+from flask import Flask, send_file
+import matplotlib.pyplot as plt
+import io
+from risk_assessment_db import get_subscribers  # Make sure to import the function
+from risk_assessment_db import add_subscriber, get_subscribers  # or wherever your backend functions are defined
 
 
 setup_comments_table()
@@ -174,6 +178,45 @@ def dashboard():
     risk_count_by_status = get_risks_by_status()  # Make sure this is defined
     return render_template('dashboard.html', total_risks=total_risks, risk_count_by_status=risk_count_by_status)
 
+# @app.route('/logout')
+# def logout():
+#     # Your logout logic here
+#     return redirect(url_for('login'))
+
+@app.route('/plot')
+def plot():
+    # Fetch real data using existing function
+    risk_count_by_status = get_risks_by_status()
+
+    statuses = list(risk_count_by_status.keys())
+    counts = list(risk_count_by_status.values())
+
+    # Create bar chart
+    plt.bar(statuses, counts, color=['red', 'green', 'blue'])
+    plt.xlabel('Status')
+    plt.ylabel('Count')
+    plt.title('Risks by Status')
+
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    return send_file(img, mimetype='image/png')
+
+@app.route('/subscribe', methods=['GET', 'POST'])
+def subscribe():
+    if request.method == 'POST':
+        email = request.form['email']  # Assuming your input field in the HTML form has the name 'email'
+        if add_subscriber(email):  # The function that actually adds the email to the database
+            flash('Successfully subscribed!', 'success')
+        else:
+            flash('An error occurred while subscribing.', 'error')
+    return render_template('subscribe.html')
+
+@app.route('/subscribers')
+def subscribers():
+    # Your code for fetching subscribers
+    subscriber_data = get_subscribers() 
+    return render_template('subscribers.html', subscribers=subscriber_data)  # Passing it to the template
 
 if __name__ == '__main__':
     app.run(debug=True)

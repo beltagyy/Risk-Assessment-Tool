@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Subscribers List</title>
+</head>
+<body>
+    <h1>Subscribers List</h1>
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Subscription Time</th>
+        </tr>
+        {% if subscribers %}
+    {% for subscriber in subscribers %}
+    <tr>
+        <td>{{ subscriber[0] }}</td> <!-- Email -->
+        <td>{{ subscriber[1] }}</td> <!-- Subscription Time -->
+    </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="2">No subscribers found.</td>
+    </tr>
+{% endif %}
+
+    </table>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+
+</body>
+</html>
