@@ -1,67 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Assessment Tool README</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        header {
-            background-color: #f4f4f4;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-        }
-        section {
-            margin-top: 20px;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 5px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Risk Assessment Tool</h1>
-    </header>
-    <section>
-        <h2>Introduction</h2>
-        <p>
-            This Risk Assessment Tool is a web application that allows users to input and evaluate risks based on their description, impact, and likelihood.
-        </p>
-    </section>
-    <section>
-        <h2>Features</h2>
-        <ul>
-            <li>User registration and login</li>
-            <li>Add, view and categorize risks</li>
-            <li>Comment on risks</li>
-            <li>Assign status to risks</li>
-        </ul>
-    </section>
-    <section>
-        <h2>Setup</h2>
-        <ol>
-            <li>Clone the repository to your local machine.</li>
-            <li>Ensure you have the required Python libraries installed. Use <code>pip install -r requirements.txt</code></li>
-            <li>Run the app using <code>python app.py</code></li>
-            <li>Open a browser and navigate to <code>http://localhost:5000</code></li>
-        </ol>
-    </section>
-    <section>
-        <h2>Contributing</h2>
-        <p>
-            We welcome contributions to improve the tool. Please fork the repository and submit pull requests for any enhancements or fixes.
-        </p>
-    </section>
-    <footer>
-        <p>© 2023 Risk Assessment Tool Team</p>
-    </footer>
-</body>
-</html>
+
+## Risk Assessment Tool
+
+This is a tool for assessing and managing risks.
+
+## Updates
+
+### Dashboard
+
+- Added a real-time dashboard to monitor risks.
+- The dashboard is built using Chart.js and shows statistics about the risks.
+
+### Notifications
+
+- Added a subscription feature.
+- Subscribers are notified when a new risk is added or updated.
+- View the list of subscribers from the 'Subscribers' page.
+
+### Logout
+
+- Added a logout functionality in the upper right corner of the screen.
+
+### How to Run the Dashboard
+
+1. Navigate to the project root folder.
+2. Run `python app.py`.
+3. Open your browser and go to `http://127.0.0.1:5000/dashboard`.
+
+### How to Subscribe for Notifications
+
+1. Go to the 'Subscribe' page from the main menu.
+2. Enter your email and click 'Subscribe'.
+
+### View Subscribers
+
+1. Navigate to the 'Subscribers' page from the main menu.
+
+### Logout
+
+1. Click on the 'Logout' button in the upper right corner to logout.
+
+## Troubleshooting
+
+If you face any issues, please check the logs or open an issue.
+
